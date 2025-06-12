@@ -1,0 +1,127 @@
+/* Global Styles */
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/images/library-hallway.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.25; /* adjustable */
+  z-index: -1;
+}
+
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  color: #2c2c2c;
+}
+
+/* Banner */
+.banner {
+  position: relative;
+  text-align: center;
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 5px solid #333;
+}
+
+.app-name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+
+/* Container */
+.container {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form input,
+.form select,
+.form button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.form input,
+.form select {
+  flex: 1 1 200px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+}
+
+.form button {
+  background: #3a3a3a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.form button:hover {
+  background: #1a1a1a;
+}
+
+/* Book List */
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+
+.book-list li {
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.book-list button {
+  background: #c0392b;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.book-list button:hover {
+  background: #a93226;
+}

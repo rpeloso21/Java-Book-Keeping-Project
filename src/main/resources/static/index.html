@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Book Tracker</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+    <div class="banner">
+    <img src="/images/book-banner.jpg" alt="Book Banner" />
+    <div class="app-name">📖 MyReadingLog</div>
+    </div>
+
+  <div class="container">
+    <h1>📚 Book Tracker</h1>
+
+    <form id="bookForm" class="form">
+      <input type="text" id="title" placeholder="Title" required />
+      <input type="text" id="author" placeholder="Author" required />
+      <input type="text" id="isbn" placeholder="ISBN" />
+      <select id="status">
+        <option value="TO_READ">To Read</option>
+        <option value="READING">Reading</option>
+        <option value="COMPLETED">Completed</option>
+      </select>
+      <button type="submit">Add Book</button>
+    </form>
+
+    <h2>Your Book List</h2>
+    <ul id="bookList" class="book-list"></ul>
+  </div>
+
+  <script>
+    const apiBase = '/api/books';
+    const bookList = document.getElementById('bookList');
+    const bookForm = document.getElementById('bookForm');
+
+    function loadBooks() {
+      fetch(apiBase)
+        .then(res => res.json())
+        .then(books => {
+          bookList.innerHTML = '';
+          books.forEach(book => {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${book.title}</strong> by ${book.author} <em>(${book.status})</em>`;
+            const del = document.createElement('button');
+            del.textContent = '🗑 Delete';
+            del.onclick = () => deleteBook(book.id);
+            li.appendChild(del);
+            bookList.appendChild(li);
+          });
+        });
+    }
+
+    bookForm.onsubmit = function (e) {
+      e.preventDefault();
+      const book = {
+        title: document.getElementById('title').value,
+        author: document.getElementById('author').value,
+        isbn: document.getElementById('isbn').value,
+        status: document.getElementById('status').value
+      };
+      fetch(apiBase, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(book)
+      }).then(() => {
+        bookForm.reset();
+        loadBooks();
+      });
+    };
+
+    function deleteBook(id) {
+      fetch(`${apiBase}/${id}`, { method: 'DELETE' }).then(() => loadBooks());
+    }
+
+    loadBooks();
+  </script>
+</body>
+</html>
