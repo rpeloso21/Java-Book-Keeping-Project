@@ -6,10 +6,10 @@
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-    <div class="banner">
+  <div class="banner">
     <img src="/images/book-banner.jpg" alt="Book Banner" />
     <div class="app-name">📖 MyReadingLog</div>
-    </div>
+  </div>
 
   <div class="container">
     <h1>📚 Book Tracker</h1>
@@ -42,13 +42,40 @@
           bookList.innerHTML = '';
           books.forEach(book => {
             const li = document.createElement('li');
-            li.innerHTML = `<strong>${book.title}</strong> by ${book.author} <em>(${book.status})</em>`;
+            li.innerHTML = `
+              <strong>${book.title}</strong> by ${book.author}
+              <label>Status:
+                <select onchange="updateStatus(${book.id}, this.value)">
+                  <option value="TO_READ" ${book.status === 'TO_READ' ? 'selected' : ''}>To Read</option>
+                  <option value="READING" ${book.status === 'READING' ? 'selected' : ''}>Reading</option>
+                  <option value="COMPLETED" ${book.status === 'COMPLETED' ? 'selected' : ''}>Completed</option>
+                </select>
+              </label>
+            `;
             const del = document.createElement('button');
             del.textContent = '🗑 Delete';
             del.onclick = () => deleteBook(book.id);
             li.appendChild(del);
             bookList.appendChild(li);
           });
+        });
+    }
+
+    function updateStatus(bookId, newStatus) {
+      fetch(`${apiBase}/${bookId}`)
+        .then(res => res.json())
+        .then(book => {
+          book.status = newStatus;
+          return fetch(`${apiBase}/${bookId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(book)
+          });
+        })
+        .then(() => loadBooks())
+        .catch(err => {
+          console.error("Error updating book status", err);
+          alert("Could not update status.");
         });
     }
 
@@ -78,3 +105,4 @@
   </script>
 </body>
 </html>
+
